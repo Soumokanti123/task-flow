@@ -1,0 +1,10 @@
+# Build & Dependency Artifacts
+**/target/
+**/node_modules/
+**/dist/
+**/.gradle/
+**/.m2/
+**/.idea/
+**/*.iml
+**/.DS_Store
+*.log
