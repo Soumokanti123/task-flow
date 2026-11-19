@@ -79,4 +79,25 @@ describe('TaskCard Component', () => {
 
     expect(onStatusChange).toHaveBeenCalledWith('task-101', 'IN_PROGRESS');
   });
+
+  it('is draggable and sets taskId on dragStart', () => {
+    render(
+      <TaskCard
+        task={baseTask}
+        onStatusChange={vi.fn()}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+
+    const card = screen.getByTestId('task-card-task-101');
+    expect(card).toHaveAttribute('draggable', 'true');
+
+    const setData = vi.fn();
+    fireEvent.dragStart(card, {
+      dataTransfer: { setData, effectAllowed: '' },
+    });
+    expect(setData).toHaveBeenCalledWith('text/plain', 'task-101');
+  });
 });
+

@@ -115,6 +115,13 @@ export const BoardPage: React.FC = () => {
     }
   };
 
+  // Drag and drop task between columns
+  const handleDropTask = (taskId: string, targetStatus: TaskStatus) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task || task.status === targetStatus) return;
+    handleStatusChange(taskId, targetStatus);
+  };
+
   // Create or Update task
   const handleTaskSubmit = async (data: {
     title: string;
@@ -374,6 +381,7 @@ export const BoardPage: React.FC = () => {
               status="TODO"
               tasks={todoTasks}
               onStatusChange={handleStatusChange}
+              onDropTask={handleDropTask}
               onEditTask={openEditTask}
               onDeleteTask={handleDeleteTask}
               onAddTask={openAddTask}
@@ -383,6 +391,7 @@ export const BoardPage: React.FC = () => {
               status="IN_PROGRESS"
               tasks={inProgressTasks}
               onStatusChange={handleStatusChange}
+              onDropTask={handleDropTask}
               onEditTask={openEditTask}
               onDeleteTask={handleDeleteTask}
               onAddTask={openAddTask}
@@ -392,6 +401,7 @@ export const BoardPage: React.FC = () => {
               status="DONE"
               tasks={doneTasks}
               onStatusChange={handleStatusChange}
+              onDropTask={handleDropTask}
               onEditTask={openEditTask}
               onDeleteTask={handleDeleteTask}
               onAddTask={openAddTask}
@@ -418,3 +428,4 @@ export const BoardPage: React.FC = () => {
     </div>
   );
 };
+
