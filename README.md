@@ -134,7 +134,7 @@ mvnw.cmd test
 # Linux / macOS
 ./mvnw test
 ```
-*Executes 16 tests covering `AuthService`, `ProjectService`, `TaskService` (ownership, overdue logic, validation), and application context loading.*
+*Executes 22 tests covering `AuthService`, `ProjectService`, `TaskService` (ownership, project members, task assignment, overdue logic, validation), and application context loading.*
 
 ### Frontend Tests (Vitest + React Testing Library)
 ```bash
@@ -151,12 +151,14 @@ npm test
 | :--- | :--- | :--- |
 | `POST` | `/api/auth/register` | Register user account |
 | `POST` | `/api/auth/login` | Login and obtain JWT token |
-| `GET` | `/api/projects` | List authenticated user's projects |
-| `POST` | `/api/projects` | Create a new project |
+| `GET` | `/api/projects` | List authenticated user's projects (owned or member) |
+| `POST` | `/api/projects` | Create a new project (creator becomes OWNER member) |
 | `GET` | `/api/projects/{id}/summary` | Aggregate counts per status + overdue count |
+| `GET` | `/api/projects/{id}/members` | List registered members of a project |
+| `POST` | `/api/projects/{id}/members` | Add a registered user to the project by email |
 | `GET` | `/api/projects/{id}/tasks` | Filter, sort, and paginate tasks |
-| `POST` | `/api/projects/{id}/tasks` | Create task under a project |
-| `PUT` | `/api/tasks/{id}` | Update task details |
+| `POST` | `/api/projects/{id}/tasks` | Create task under a project (assignable to project members) |
+| `PUT` | `/api/tasks/{id}` | Update task details and assignee |
 | `PATCH` | `/api/tasks/{id}/status` | Fast status transition (`TODO`, `IN_PROGRESS`, `DONE`) |
 | `DELETE` | `/api/tasks/{id}` | Delete a task |
 
