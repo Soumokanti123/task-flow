@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Task, TaskPriority, TaskStatus } from '../../types';
+import { ProjectMember, Task, TaskPriority, TaskStatus } from '../../types';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
 
@@ -12,9 +12,11 @@ interface TaskModalProps {
     status: TaskStatus;
     priority: TaskPriority;
     dueDate?: string;
+    assigneeId?: string;
   }) => Promise<void>;
   initialTask?: Task | null;
   defaultStatus?: TaskStatus;
+  members?: ProjectMember[];
 }
 
 export const TaskModal: React.FC<TaskModalProps> = ({
@@ -23,12 +25,14 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   onSubmit,
   initialTask,
   defaultStatus = 'TODO',
+  members = [],
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<TaskStatus>(defaultStatus);
   const [priority, setPriority] = useState<TaskPriority>('MEDIUM');
   const [dueDate, setDueDate] = useState('');
+  const [assigneeId, setAssigneeId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -39,12 +43,14 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       setStatus(initialTask.status);
       setPriority(initialTask.priority);
       setDueDate(initialTask.dueDate || '');
+      setAssigneeId(initialTask.assignee?.id || '');
     } else {
       setTitle('');
       setDescription('');
       setStatus(defaultStatus);
       setPriority('MEDIUM');
       setDueDate('');
+      setAssigneeId('');
     }
     setErrors({});
   }, [initialTask, defaultStatus, isOpen]);
@@ -82,6 +88,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
         status,
         priority,
         dueDate: dueDate || undefined,
+        assigneeId: assigneeId || undefined,
       });
       onClose();
     } catch (err: any) {
@@ -179,25 +186,45 @@ export const TaskModal: React.FC<TaskModalProps> = ({
           </div>
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Due Date
-          </label>
-          <input
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-1 ${
-              errors.dueDate
-                ? 'border-rose-400 focus:ring-rose-200'
-                : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
-            }`}
-          />
-          {errors.dueDate && (
-            <span className="block text-xs text-rose-600 mt-1 font-medium">
-              {errors.dueDate}
-            </span>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
+              Due Date
+            </label>
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-1 ${
+                errors.dueDate
+                  ? 'border-rose-400 focus:ring-rose-200'
+                  : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
+              }`}
+            />
+            {errors.dueDate && (
+              <span className="block text-xs text-rose-600 mt-1 font-medium">
+                {errors.dueDate}
+              </span>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
+              Assignee
+            </label>
+            <select
+              value={assigneeId}
+              onChange={(e) => setAssigneeId(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 bg-white cursor-pointer"
+            >
+              <option value="">Unassigned</option>
+              {members.map((m) => (
+                <option key={m.userId} value={m.userId}>
+                  {m.name} ({m.email})
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
@@ -212,4 +239,3 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     </Modal>
   );
 };
-

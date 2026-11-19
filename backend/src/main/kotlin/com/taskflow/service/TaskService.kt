@@ -91,6 +91,9 @@ class TaskService(
         }
 
         val assignee = request.assigneeId?.let {
+            if (!projectService.isUserProjectMember(projectId, it)) {
+                throw BadRequestException("Assignee must be a registered member of this project")
+            }
             userRepository.findById(it)
                 .orElseThrow { ResourceNotFoundException("Assignee not found with ID: $it") }
         }
@@ -114,6 +117,9 @@ class TaskService(
         val task = getTaskAndVerifyOwnership(taskId, currentUserId)
 
         val assignee = request.assigneeId?.let {
+            if (!projectService.isUserProjectMember(task.project.id!!, it)) {
+                throw BadRequestException("Assignee must be a registered member of this project")
+            }
             userRepository.findById(it)
                 .orElseThrow { ResourceNotFoundException("Assignee not found with ID: $it") }
         }

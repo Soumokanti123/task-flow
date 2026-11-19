@@ -2,9 +2,11 @@ package com.taskflow.controller
 
 import com.taskflow.domain.model.TaskPriority
 import com.taskflow.domain.model.TaskStatus
+import com.taskflow.dto.request.AddProjectMemberRequest
 import com.taskflow.dto.request.CreateProjectRequest
 import com.taskflow.dto.request.CreateTaskRequest
 import com.taskflow.dto.response.PageResponse
+import com.taskflow.dto.response.ProjectMemberResponse
 import com.taskflow.dto.response.ProjectResponse
 import com.taskflow.dto.response.ProjectSummaryResponse
 import com.taskflow.dto.response.TaskResponse
@@ -82,6 +84,23 @@ class ProjectController(
     ): ResponseEntity<TaskResponse> {
         val task = taskService.createTask(id, request)
         return ResponseEntity.status(HttpStatus.CREATED).body(task)
+    }
+
+    @GetMapping("/{id}/members")
+    @Operation(summary = "List all registered members of a project")
+    fun getProjectMembers(@PathVariable id: UUID): ResponseEntity<List<ProjectMemberResponse>> {
+        val members = projectService.getProjectMembers(id)
+        return ResponseEntity.ok(members)
+    }
+
+    @PostMapping("/{id}/members")
+    @Operation(summary = "Add a registered user to a project by email")
+    fun addProjectMember(
+        @PathVariable id: UUID,
+        @Valid @RequestBody request: AddProjectMemberRequest
+    ): ResponseEntity<ProjectMemberResponse> {
+        val member = projectService.addProjectMember(id, request)
+        return ResponseEntity.status(HttpStatus.CREATED).body(member)
     }
 }
 

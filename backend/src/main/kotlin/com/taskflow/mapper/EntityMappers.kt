@@ -1,8 +1,10 @@
 package com.taskflow.mapper
 
 import com.taskflow.domain.model.Project
+import com.taskflow.domain.model.ProjectMember
 import com.taskflow.domain.model.Task
 import com.taskflow.domain.model.User
+import com.taskflow.dto.response.ProjectMemberResponse
 import com.taskflow.dto.response.ProjectResponse
 import com.taskflow.dto.response.TaskResponse
 import com.taskflow.dto.response.UserResponse
@@ -42,6 +44,17 @@ fun Task.toResponse(): TaskResponse {
         assignee = this.assignee?.toResponse(),
         createdAt = this.createdAt,
         updatedAt = this.updatedAt
+    )
+}
+
+fun ProjectMember.toResponse(): ProjectMemberResponse {
+    return ProjectMemberResponse(
+        id = this.id ?: throw IllegalStateException("ProjectMember ID cannot be null when mapping to DTO"),
+        userId = this.user.id ?: throw IllegalStateException("User ID cannot be null"),
+        name = this.user.name,
+        email = this.user.email,
+        role = this.role,
+        joinedAt = this.joinedAt
     )
 }
 

@@ -39,6 +39,17 @@ export interface ProjectSummary {
   overdueCount: number;
 }
 
+export type ProjectRole = 'OWNER' | 'MEMBER';
+
+export interface ProjectMember {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  role: ProjectRole;
+  joinedAt: string;
+}
+
 export interface PageResponse<T> {
   content: T[];
   page: number;

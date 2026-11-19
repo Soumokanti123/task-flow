@@ -6,5 +6,7 @@ class ForbiddenException(message: String = "You do not have permission to access
 
 class DuplicateEmailException(message: String = "Email is already registered") : RuntimeException(message)
 
+class ConflictException(message: String) : RuntimeException(message)
+
 class BadRequestException(message: String) : RuntimeException(message)
 

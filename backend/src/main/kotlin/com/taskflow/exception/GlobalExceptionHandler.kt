@@ -86,18 +86,17 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse)
     }
 
-    @ExceptionHandler(DuplicateEmailException::class)
+    @ExceptionHandler(DuplicateEmailException::class, ConflictException::class)
     fun handleDuplicateEmailException(
-        ex: DuplicateEmailException,
+        ex: Exception,
         request: HttpServletRequest
     ): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(
             timestamp = Instant.now(),
             status = HttpStatus.CONFLICT.value(),
             error = HttpStatus.CONFLICT.reasonPhrase,
-            message = ex.message ?: "Email already registered",
-            path = request.requestURI,
-            fieldErrors = mapOf("email" to (ex.message ?: "Email already in use"))
+            message = ex.message ?: "Resource conflict",
+            path = request.requestURI
         )
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse)
     }

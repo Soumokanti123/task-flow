@@ -192,5 +192,48 @@ class TaskServiceTest {
         assertEquals(1, result.content.size)
         assertEquals("Specification Task", result.content[0].title)
     }
+
+    @Test
+    fun `createTask throws BadRequestException when assignee is not a member of project`() {
+        val nonMemberId = UUID.randomUUID()
+        val request = CreateTaskRequest(
+            title = "Task with outsider",
+            assigneeId = nonMemberId
+        )
+
+        every { projectService.isUserProjectMember(projectId, nonMemberId) } returns false
+
+        val ex = assertThrows<BadRequestException> {
+            taskService.createTask(projectId, request)
+        }
+        assertEquals("Assignee must be a registered member of this project", ex.message)
+    }
+
+    @Test
+    fun `createTask assigns user when assignee is a registered member of project`() {
+        val memberUser = User(id = UUID.randomUUID(), name = "Alex", email = "alex@test.com", passwordHash = "h")
+        val request = CreateTaskRequest(
+            title = "Task with member",
+            assigneeId = memberUser.id
+        )
+
+        val savedTask = Task(
+            id = UUID.randomUUID(),
+            title = "Task with member",
+            project = project,
+            assignee = memberUser
+        )
+
+        every { projectService.isUserProjectMember(projectId, memberUser.id!!) } returns true
+        every { userRepository.findById(memberUser.id!!) } returns Optional.of(memberUser)
+        every { taskRepository.save(any()) } returns savedTask
+
+        val result = taskService.createTask(projectId, request)
+
+        assertEquals("Task with member", result.title)
+        assertNotNull(result.assignee)
+        assertEquals(memberUser.id, result.assignee?.id)
+        assertEquals("Alex", result.assignee?.name)
+    }
 }
 

@@ -1,6 +1,7 @@
 package com.taskflow.config
 
 import com.taskflow.domain.model.*
+import com.taskflow.domain.repository.ProjectMemberRepository
 import com.taskflow.domain.repository.ProjectRepository
 import com.taskflow.domain.repository.TaskRepository
 import com.taskflow.domain.repository.UserRepository
@@ -15,6 +16,7 @@ import java.time.LocalDate
 class DataInitializer(
     private val userRepository: UserRepository,
     private val projectRepository: ProjectRepository,
+    private val projectMemberRepository: ProjectMemberRepository,
     private val taskRepository: TaskRepository,
     private val passwordEncoder: PasswordEncoder
 ) : CommandLineRunner {
@@ -52,6 +54,22 @@ class DataInitializer(
                 name = "TaskFlow Core Platform",
                 description = "Primary sprint tasks and infrastructure delivery for TaskFlow",
                 owner = demoUser
+            )
+        )
+
+        projectMemberRepository.save(
+            ProjectMember(
+                project = project,
+                user = demoUser,
+                role = ProjectRole.OWNER
+            )
+        )
+
+        projectMemberRepository.save(
+            ProjectMember(
+                project = project,
+                user = teammate,
+                role = ProjectRole.MEMBER
             )
         )
 

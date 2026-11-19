@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   AuthResponse,
   Project,
+  ProjectMember,
   ProjectSummary,
   Task,
   TaskStatus,
@@ -89,6 +90,14 @@ export const projectApi = {
     }
   ) => {
     const res = await apiClient.post<Task>(`/projects/${projectId}/tasks`, data);
+    return res.data;
+  },
+  getMembers: async (projectId: string) => {
+    const res = await apiClient.get<ProjectMember[]>(`/projects/${projectId}/members`);
+    return res.data;
+  },
+  addMember: async (projectId: string, email: string) => {
+    const res = await apiClient.post<ProjectMember>(`/projects/${projectId}/members`, { email });
     return res.data;
   },
 };

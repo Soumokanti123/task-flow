@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { projectApi, taskApi } from '../api/client';
-import { Project, Task, TaskStatus, TaskPriority, ProjectSummary } from '../types';
+import { Project, Task, TaskStatus, TaskPriority, ProjectSummary, ProjectMember } from '../types';
 import { SummaryBar } from '../components/board/SummaryBar';
 import { KanbanColumn } from '../components/board/KanbanColumn';
 import { TaskModal } from '../components/board/TaskModal';
 import { ProjectModal } from '../components/board/ProjectModal';
+import { MembersModal } from '../components/board/MembersModal';
 import { Button } from '../components/common/Button';
 import {
   CheckSquare,
@@ -15,6 +16,7 @@ import {
   RefreshCw,
   SlidersHorizontal,
   ChevronDown,
+  Users,
 } from 'lucide-react';
 
 export const BoardPage: React.FC = () => {
@@ -23,6 +25,7 @@ export const BoardPage: React.FC = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
   const [tasks, setTasks] = useState<Task[]>([]);
   const [summary, setSummary] = useState<ProjectSummary | null>(null);
+  const [members, setMembers] = useState<ProjectMember[]>([]);
 
   // Filters & sorting
   const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
@@ -37,6 +40,7 @@ export const BoardPage: React.FC = () => {
   // Modals
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [defaultTaskStatus, setDefaultTaskStatus] = useState<TaskStatus>('TODO');
 
@@ -76,13 +80,15 @@ export const BoardPage: React.FC = () => {
         filterParams.priority = priorityFilter as TaskPriority;
       }
 
-      const [tasksRes, summaryRes] = await Promise.all([
+      const [tasksRes, summaryRes, membersRes] = await Promise.all([
         projectApi.getTasks(projectId, filterParams),
         projectApi.getSummary(projectId),
+        projectApi.getMembers(projectId),
       ]);
 
       setTasks(tasksRes.content);
       setSummary(summaryRes);
+      setMembers(membersRes);
     } catch (err: any) {
       setErrorMessage(err.response?.data?.message || 'Failed to load board tasks');
     } finally {
@@ -122,6 +128,13 @@ export const BoardPage: React.FC = () => {
     handleStatusChange(taskId, targetStatus);
   };
 
+  // Add member to project
+  const handleAddMember = async (email: string) => {
+    if (!selectedProjectId) return;
+    const newMember = await projectApi.addMember(selectedProjectId, email);
+    setMembers((prev) => [...prev, newMember]);
+  };
+
   // Create or Update task
   const handleTaskSubmit = async (data: {
     title: string;
@@ -129,12 +142,10 @@ export const BoardPage: React.FC = () => {
     status: TaskStatus;
     priority: TaskPriority;
     dueDate?: string;
+    assigneeId?: string;
   }) => {
     if (editingTask) {
-      await taskApi.update(editingTask.id, {
-        ...data,
-        assigneeId: editingTask.assignee?.id,
-      });
+      await taskApi.update(editingTask.id, data);
     } else {
       await projectApi.createTask(selectedProjectId, data);
     }
@@ -252,6 +263,17 @@ export const BoardPage: React.FC = () => {
             >
               <FolderPlus className="w-4 h-4 mr-1.5 text-slate-700" />
               New Project
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsMembersModalOpen(true)}
+              disabled={!selectedProjectId}
+              className="text-slate-700 hover:bg-slate-50"
+            >
+              <Users className="w-4 h-4 mr-1.5 text-slate-600" />
+              Members ({members.length})
             </Button>
           </div>
 
@@ -413,6 +435,7 @@ export const BoardPage: React.FC = () => {
         onSubmit={handleTaskSubmit}
         initialTask={editingTask}
         defaultStatus={defaultTaskStatus}
+        members={members}
       />
 
       {/* Project Modal */}
@@ -420,6 +443,14 @@ export const BoardPage: React.FC = () => {
         isOpen={isProjectModalOpen}
         onClose={() => setIsProjectModalOpen(false)}
         onSubmit={handleCreateProject}
+      />
+
+      {/* Project Members Modal */}
+      <MembersModal
+        isOpen={isMembersModalOpen}
+        onClose={() => setIsMembersModalOpen(false)}
+        members={members}
+        onAddMember={handleAddMember}
       />
     </div>
   );
