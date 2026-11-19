@@ -120,10 +120,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Implement user login flow"
             maxLength={120}
-            className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
+            className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-1 ${
               errors.title
                 ? 'border-rose-400 focus:ring-rose-200'
-                : 'border-slate-300 focus:ring-indigo-200 focus:border-indigo-500'
+                : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
             }`}
           />
           <div className="flex justify-between items-center mt-1">
@@ -143,7 +143,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             placeholder="Additional context or acceptance criteria..."
-            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400"
           />
         </div>
 
@@ -155,7 +155,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value as TaskPriority)}
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 bg-white"
+              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 bg-white"
             >
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
@@ -170,7 +170,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as TaskStatus)}
-              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 bg-white"
+              className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400 bg-white"
             >
               <option value="TODO">To Do</option>
               <option value="IN_PROGRESS">In Progress</option>
@@ -187,10 +187,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
+            className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-1 ${
               errors.dueDate
                 ? 'border-rose-400 focus:ring-rose-200'
-                : 'border-slate-300 focus:ring-indigo-200 focus:border-indigo-500'
+                : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
             }`}
           />
           {errors.dueDate && (
@@ -212,3 +212,4 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     </Modal>
   );
 };
+

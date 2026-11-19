@@ -62,3 +62,4 @@ export interface ApiError {
   path: string;
   fieldErrors?: Record<string, string>;
 }
+

@@ -58,45 +58,43 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-50/50 via-white to-slate-100">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200/80 p-8">
-        <div className="flex items-center justify-center gap-2 mb-6 text-indigo-600">
-          <div className="p-2.5 bg-indigo-600 text-white rounded-xl shadow-md shadow-indigo-200">
-            <CheckSquare className="w-6 h-6" />
-          </div>
-          <span className="text-2xl font-bold text-slate-900 tracking-tight">TaskFlow</span>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50">
+      <div className="w-full max-w-sm bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+        <div className="flex items-center justify-center gap-2 mb-4 text-slate-800">
+          <CheckSquare className="w-5 h-5 text-slate-800" />
+          <span className="text-xl font-bold tracking-tight">TaskFlow</span>
         </div>
 
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-slate-900">
-            {isRegister ? 'Create your account' : 'Welcome back'}
+        <div className="text-center mb-5">
+          <h2 className="text-base font-semibold text-slate-900">
+            {isRegister ? 'Create Account' : 'Sign In'}
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 mt-0.5">
             {isRegister
-              ? 'Organize projects, assign tasks, and meet team deadlines'
+              ? 'Enter your details to get started'
               : 'Enter your credentials to access your projects'}
           </p>
         </div>
 
         {errors.general && (
-          <div className="mb-4 p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+          <div className="mb-4 p-2.5 rounded text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
             {errors.general}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {isRegister && (
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+              <label className="block text-xs font-medium text-slate-700 mb-1">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Jane Doe"
-                className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
+                className={`w-full px-3 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 ${
                   errors.name
                     ? 'border-rose-400 focus:ring-rose-200'
-                    : 'border-slate-300 focus:ring-indigo-200 focus:border-indigo-500'
+                    : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
                 }`}
               />
               {errors.name && <span className="text-xs text-rose-600 mt-0.5 block">{errors.name}</span>}
@@ -104,38 +102,38 @@ export const AuthPage: React.FC = () => {
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+            <label className="block text-xs font-medium text-slate-700 mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@company.com"
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
+              placeholder="demo@taskflow.dev"
+              className={`w-full px-3 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 ${
                 errors.email
                   ? 'border-rose-400 focus:ring-rose-200'
-                  : 'border-slate-300 focus:ring-indigo-200 focus:border-indigo-500'
+                  : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
               }`}
             />
             {errors.email && <span className="text-xs text-rose-600 mt-0.5 block">{errors.email}</span>}
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <label className="block text-xs font-medium text-slate-700 mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className={`w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 ${
                 errors.password
                   ? 'border-rose-400 focus:ring-rose-200'
-                  : 'border-slate-300 focus:ring-indigo-200 focus:border-indigo-500'
+                  : 'border-slate-300 focus:ring-slate-400 focus:border-slate-400'
               }`}
             />
             {errors.password && <span className="text-xs text-rose-600 mt-0.5 block">{errors.password}</span>}
           </div>
 
-          <Button type="submit" className="w-full mt-2" isLoading={isLoading}>
+          <Button type="submit" className="w-full mt-1" isLoading={isLoading}>
             {isRegister ? (
               <span className="flex items-center gap-1.5">
                 <UserPlus className="w-4 h-4" /> Create Account
@@ -148,15 +146,15 @@ export const AuthPage: React.FC = () => {
           </Button>
         </form>
 
-        <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+        <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-2.5">
           <Button
             type="button"
             variant="outline"
-            className="w-full text-indigo-700 border-indigo-200 hover:bg-indigo-50"
+            className="w-full text-slate-700 border-slate-300 hover:bg-slate-50"
             onClick={handleDemoLogin}
             disabled={isLoading}
           >
-            ⚡ Quick Demo Login (demo@taskflow.dev)
+            Sign in as Demo User
           </Button>
 
           <div className="text-center">
@@ -166,11 +164,11 @@ export const AuthPage: React.FC = () => {
                 setIsRegister(!isRegister);
                 setErrors({});
               }}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-1"
+              className="text-xs text-slate-600 hover:text-slate-900 transition-colors inline-flex items-center gap-1"
             >
               {isRegister
                 ? 'Already have an account? Sign in'
-                : "Don't have an account? Register now"}
+                : "Don't have an account? Register"}
               <ArrowRight className="w-3 h-3" />
             </button>
           </div>

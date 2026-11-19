@@ -61,7 +61,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Q4 Growth Roadmap"
             maxLength={100}
-            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400"
           />
         </div>
 
@@ -74,7 +74,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             placeholder="Goals and milestones for this project..."
-            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+            className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 focus:border-slate-400"
           />
         </div>
 
@@ -90,3 +90,4 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
     </Modal>
   );
 };
+

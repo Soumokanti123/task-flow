@@ -184,23 +184,19 @@ export const BoardPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Top Navbar */}
-      <header className="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-indigo-600 text-white rounded-lg shadow-sm">
-              <CheckSquare className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-lg font-bold text-slate-900 tracking-tight">TaskFlow</span>
-              <span className="hidden sm:inline-block ml-2 text-2xs px-2 py-0.5 rounded font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                Team Tracker
-              </span>
-            </div>
+      <header className="sticky top-0 z-30 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <CheckSquare className="w-5 h-5 text-slate-900" />
+            <span className="text-base font-bold text-slate-900 tracking-tight">TaskFlow</span>
+            <span className="text-2xs px-2 py-0.5 rounded font-medium bg-slate-100 text-slate-600 border border-slate-200">
+              Workspace
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2 text-xs text-slate-600 font-medium">
-              <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+              <div className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-2xs">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
               <span>{user?.name}</span>
@@ -210,10 +206,10 @@ export const BoardPage: React.FC = () => {
               size="sm"
               onClick={logout}
               title="Sign Out"
-              className="text-slate-600 hover:text-rose-600 hover:bg-rose-50"
+              className="text-slate-600 hover:text-rose-600"
             >
-              <LogOut className="w-4 h-4 mr-1 sm:mr-1.5" />
-              <span className="hidden sm:inline">Logout</span>
+              <LogOut className="w-4 h-4 mr-1" />
+              <span>Logout</span>
             </Button>
           </div>
         </div>
@@ -236,7 +232,7 @@ export const BoardPage: React.FC = () => {
                 <select
                   value={selectedProjectId}
                   onChange={(e) => setSelectedProjectId(e.target.value)}
-                  className="appearance-none bg-slate-50 border border-slate-300 text-slate-900 text-sm font-semibold rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                  className="appearance-none bg-slate-50 border border-slate-300 text-slate-900 text-sm font-semibold rounded-lg pl-3 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-slate-400 cursor-pointer"
                 >
                   {projects.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -252,9 +248,9 @@ export const BoardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setIsProjectModalOpen(true)}
-              className="border-dashed border-slate-300 text-slate-700 hover:border-indigo-400"
+              className="border-dashed border-slate-300 text-slate-700 hover:border-slate-400"
             >
-              <FolderPlus className="w-4 h-4 mr-1.5 text-indigo-600" />
+              <FolderPlus className="w-4 h-4 mr-1.5 text-slate-700" />
               New Project
             </Button>
           </div>
@@ -310,7 +306,7 @@ export const BoardPage: React.FC = () => {
               <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 font-medium focus:ring-1 focus:ring-indigo-500 cursor-pointer"
+                className="bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 font-medium focus:ring-1 focus:ring-slate-400 cursor-pointer"
               >
                 <option value="ALL">All Priorities</option>
                 <option value="LOW">Low</option>
@@ -329,7 +325,7 @@ export const BoardPage: React.FC = () => {
                   setSortBy(field);
                   setSortDirection(dir);
                 }}
-                className="bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 font-medium focus:ring-1 focus:ring-indigo-500 cursor-pointer"
+                className="bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 font-medium focus:ring-1 focus:ring-slate-400 cursor-pointer"
               >
                 <option value="dueDate_asc">Due Date (Earliest First)</option>
                 <option value="dueDate_desc">Due Date (Latest First)</option>
@@ -360,7 +356,7 @@ export const BoardPage: React.FC = () => {
           </div>
         ) : projects.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-2xs">
-            <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
               <FolderPlus className="w-6 h-6" />
             </div>
             <h3 className="text-base font-semibold text-slate-900">No projects yet</h3>

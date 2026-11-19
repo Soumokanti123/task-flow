@@ -25,11 +25,11 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500 shadow-sm',
-    secondary: 'bg-slate-200 hover:bg-slate-300 text-slate-800 focus:ring-slate-400',
-    danger: 'bg-rose-600 hover:bg-rose-700 text-white focus:ring-rose-500 shadow-sm',
-    outline: 'border border-slate-300 hover:bg-slate-100 text-slate-700 focus:ring-indigo-500',
-    ghost: 'hover:bg-slate-100 text-slate-700 focus:ring-slate-400',
+    primary: 'bg-slate-900 hover:bg-slate-800 text-white focus:ring-slate-700 shadow-xs',
+    secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 focus:ring-slate-300',
+    danger: 'bg-rose-600 hover:bg-rose-700 text-white focus:ring-rose-500 shadow-xs',
+    outline: 'border border-slate-300 hover:bg-slate-100 text-slate-700 focus:ring-slate-400',
+    ghost: 'hover:bg-slate-100 text-slate-700 focus:ring-slate-300',
   };
 
   return (
@@ -63,3 +63,4 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
+
