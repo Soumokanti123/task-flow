@@ -107,9 +107,9 @@ mvnw.cmd spring-boot:run
 ./mvnw spring-boot:run
 ```
 
-- API Base: `http://localhost:8080/api`
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-- H2 Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:taskflowdb`)
+- API Base: `http://localhost:8088/api`
+- Swagger UI: `http://localhost:8088/swagger-ui.html`
+- H2 Console: `http://localhost:8088/h2-console` (JDBC URL: `jdbc:h2:mem:taskflowdb`)
 
 #### 2. Frontend
 ```bash
@@ -119,7 +119,7 @@ npm run dev
 ```
 
 - Access the frontend at: `http://localhost:5173`
-- The Vite dev server automatically proxies `/api` requests to `http://localhost:8080`.
+- The Vite dev server automatically proxies `/api` requests to `http://localhost:8088`.
 
 ---
 
@@ -168,3 +168,4 @@ npm test
 2. **Overdue Calculation**: A task is flagged as overdue when its `dueDate < CURRENT_DATE` and its status is **not** `DONE`.
 3. **In-Memory H2 for Dev vs PostgreSQL for Prod**: H2 in PostgreSQL compatibility mode was selected for zero-friction local cloning and quick evaluation without requiring a running PostgreSQL instance, while Docker Compose provisions standard PostgreSQL 16.
 4. **State Management**: React Context (`AuthContext`) paired with localized component state was chosen over Redux to minimize boilerplate while providing clean separation of concerns.
+
