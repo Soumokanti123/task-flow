@@ -20,3 +20,4 @@ interface ProjectMemberRepository : JpaRepository<ProjectMember, UUID> {
 
     fun deleteByProjectIdAndUserId(projectId: UUID, userId: UUID)
 }
+

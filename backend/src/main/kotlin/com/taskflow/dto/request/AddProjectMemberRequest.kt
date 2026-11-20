@@ -8,3 +8,4 @@ data class AddProjectMemberRequest(
     @field:Email(message = "Valid email address is required")
     val email: String
 )
+

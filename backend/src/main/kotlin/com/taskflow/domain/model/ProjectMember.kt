@@ -31,3 +31,4 @@ class ProjectMember(
     @Column(name = "joined_at", nullable = false, updatable = false)
     val joinedAt: Instant = Instant.now()
 )
+
