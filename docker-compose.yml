@@ -29,6 +29,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
+      PORT: 8080
       SPRING_PROFILES_ACTIVE: prod
       DB_URL: jdbc:postgresql://postgres:5432/taskflow
       DB_USERNAME: taskflow
