@@ -8,4 +8,5 @@
 **/*.iml
 **/.DS_Store
 *.log
+push_step_by_step.ps1
 
