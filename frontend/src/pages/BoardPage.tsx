@@ -7,6 +7,7 @@ import { KanbanColumn } from '../components/board/KanbanColumn';
 import { TaskModal } from '../components/board/TaskModal';
 import { ProjectModal } from '../components/board/ProjectModal';
 import { MembersModal } from '../components/board/MembersModal';
+import { AiPlannerModal } from '../components/board/AiPlannerModal';
 import { Button } from '../components/common/Button';
 import {
   CheckSquare,
@@ -17,6 +18,7 @@ import {
   SlidersHorizontal,
   ChevronDown,
   Users,
+  Sparkles,
 } from 'lucide-react';
 
 export const BoardPage: React.FC = () => {
@@ -41,6 +43,7 @@ export const BoardPage: React.FC = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [defaultTaskStatus, setDefaultTaskStatus] = useState<TaskStatus>('TODO');
 
@@ -133,6 +136,13 @@ export const BoardPage: React.FC = () => {
     if (!selectedProjectId) return;
     const newMember = await projectApi.addMember(selectedProjectId, email);
     setMembers((prev) => [...prev, newMember]);
+  };
+
+  const handleAiTasksCreated = (newTasks: Task[]) => {
+    setTasks((prev) => [...newTasks, ...prev]);
+    if (selectedProjectId) {
+      projectApi.getSummary(selectedProjectId).then(setSummary).catch(() => {});
+    }
   };
 
   // Create or Update task
@@ -278,6 +288,16 @@ export const BoardPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="md"
+              onClick={() => setIsAiModalOpen(true)}
+              disabled={!selectedProjectId}
+              className="border-indigo-200 text-indigo-700 bg-indigo-50/60 hover:bg-indigo-100 hover:border-indigo-300 font-medium"
+            >
+              <Sparkles className="w-4 h-4 mr-1.5 text-indigo-600" />
+              Plan with AI
+            </Button>
             <Button
               variant="primary"
               size="md"
@@ -451,6 +471,16 @@ export const BoardPage: React.FC = () => {
         onClose={() => setIsMembersModalOpen(false)}
         members={members}
         onAddMember={handleAddMember}
+      />
+
+      {/* AI Task Planner Modal */}
+      <AiPlannerModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+        projectId={selectedProjectId}
+        projectName={activeProject?.name || 'Project'}
+        members={members}
+        onTasksCreated={handleAiTasksCreated}
       />
     </div>
   );

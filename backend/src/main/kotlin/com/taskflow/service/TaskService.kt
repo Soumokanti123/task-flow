@@ -112,6 +112,38 @@ class TaskService(
     }
 
     @Transactional
+    fun createTasksBatch(projectId: UUID, requests: List<CreateTaskRequest>): List<TaskResponse> {
+        val currentUserId = authService.getCurrentUserId()
+        val project = projectService.getProjectIfOwner(projectId, currentUserId)
+
+        val tasks = requests.map { request ->
+            if (request.dueDate != null && request.dueDate.isBefore(LocalDate.now())) {
+                throw BadRequestException("Due date cannot be in the past")
+            }
+
+            val assignee = request.assigneeId?.let {
+                if (!projectService.isUserProjectMember(projectId, it)) {
+                    throw BadRequestException("Assignee must be a registered member of this project")
+                }
+                userRepository.findById(it)
+                    .orElseThrow { ResourceNotFoundException("Assignee not found with ID: $it") }
+            }
+
+            Task(
+                title = request.title.trim(),
+                description = request.description?.trim(),
+                status = request.status,
+                priority = request.priority,
+                dueDate = request.dueDate,
+                project = project,
+                assignee = assignee
+            )
+        }
+
+        return taskRepository.saveAll(tasks).map { it.toResponse() }
+    }
+
+    @Transactional
     fun updateTask(taskId: UUID, request: UpdateTaskRequest): TaskResponse {
         val currentUserId = authService.getCurrentUserId()
         val task = getTaskAndVerifyOwnership(taskId, currentUserId)
@@ -189,4 +221,3 @@ class TaskService(
         return task
     }
 }
-

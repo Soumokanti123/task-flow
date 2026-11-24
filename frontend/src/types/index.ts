@@ -65,6 +65,21 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface AiTaskSuggestion {
+  title: string;
+  description?: string;
+  priority: TaskPriority;
+  dueDate?: string;
+  suggestedAssigneeEmail?: string;
+  suggestedAssigneeId?: string;
+  suggestedAssigneeName?: string;
+}
+
+export interface AiPlanResponse {
+  planSummary: string;
+  suggestedTasks: AiTaskSuggestion[];
+}
+
 export interface ApiError {
   timestamp: string;
   status: number;

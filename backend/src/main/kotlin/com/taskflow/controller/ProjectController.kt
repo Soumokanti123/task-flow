@@ -3,6 +3,7 @@ package com.taskflow.controller
 import com.taskflow.domain.model.TaskPriority
 import com.taskflow.domain.model.TaskStatus
 import com.taskflow.dto.request.AddProjectMemberRequest
+import com.taskflow.dto.request.BatchCreateTasksRequest
 import com.taskflow.dto.request.CreateProjectRequest
 import com.taskflow.dto.request.CreateTaskRequest
 import com.taskflow.dto.response.PageResponse
@@ -84,6 +85,16 @@ class ProjectController(
     ): ResponseEntity<TaskResponse> {
         val task = taskService.createTask(id, request)
         return ResponseEntity.status(HttpStatus.CREATED).body(task)
+    }
+
+    @PostMapping("/{id}/tasks/batch")
+    @Operation(summary = "Batch create multiple tasks within a project")
+    fun createTasksBatch(
+        @PathVariable id: UUID,
+        @Valid @RequestBody request: BatchCreateTasksRequest
+    ): ResponseEntity<List<TaskResponse>> {
+        val tasks = taskService.createTasksBatch(id, request.tasks)
+        return ResponseEntity.status(HttpStatus.CREATED).body(tasks)
     }
 
     @GetMapping("/{id}/members")

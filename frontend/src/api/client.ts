@@ -8,6 +8,7 @@ import {
   TaskStatus,
   TaskPriority,
   PageResponse,
+  AiPlanResponse,
 } from '../types';
 
 export const apiClient = axios.create({
@@ -98,6 +99,34 @@ export const projectApi = {
   },
   addMember: async (projectId: string, email: string) => {
     const res = await apiClient.post<ProjectMember>(`/projects/${projectId}/members`, { email });
+    return res.data;
+  },
+  createTasksBatch: async (
+    projectId: string,
+    tasks: {
+      title: string;
+      description?: string;
+      status?: TaskStatus;
+      priority?: TaskPriority;
+      dueDate?: string;
+      assigneeId?: string;
+    }[]
+  ) => {
+    const res = await apiClient.post<Task[]>(`/projects/${projectId}/tasks/batch`, { tasks });
+    return res.data;
+  },
+};
+
+export const aiApi = {
+  generatePlan: async (
+    projectId: string,
+    data: {
+      prompt: string;
+      sprintDurationDays?: number;
+      targetTaskCount?: number;
+    }
+  ): Promise<AiPlanResponse> => {
+    const res = await apiClient.post<AiPlanResponse>(`/projects/${projectId}/ai/generate-plan`, data);
     return res.data;
   },
 };
